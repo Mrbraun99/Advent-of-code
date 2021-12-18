@@ -5,7 +5,8 @@ points = {')' : 3,']': 57,'}' : 1197,'>' : 25137}
 
 count = 0
 with open("input.txt") as file:
-    for line in file:       
+    for line in file:
+        line = line.strip()
         prevLength = len(line)
         while True:
             
@@ -18,7 +19,7 @@ with open("input.txt") as file:
                 break
             prevLength = len(line)           
 
-        for i in range(len(line)-1):
+        for i in range(len(line) - 1):
             if line[i] not in ['(','[','{','<']:
                 continue
             if line[i+1] not in [')',']','}','>']:
