@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="shortcut icon" type="image/png" href="assets/favicon.png">
+    <meta charset="utf-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.js"></script>
+    <script>
+        function setup() {
+            setupPage(getItem("aoc_year") ?? ((month() == 12) ? year() : year() - 1));
+
+            console.log('%c🎄 Merry Christmas! 🎄', 'color: green; font-size: 20px;');
+            console.log("   - p1t(<DAY>)");
+            console.log("   - p2t(<DAY>)");
+            console.log("   - p1(<DAY>)");
+            console.log("   - p2(<DAY>)");
+            console.log("   - changeYear(<YEAR>)");
+            console.log('%c🎄 Merry Christmas! 🎄', 'color: green; font-size: 20px;');
+        }
+
+        function setupPage(year) {
+            const days = year == (new Date().getFullYear()) ? Math.min(day(), 25) : 25;
+
+            document.getElementById("current-year").innerHTML = year;
+            document.getElementById("button-container").innerHTML = "";
+            document.getElementById("current-day").innerHTML = "";
+            document.getElementById("part1").innerHTML = "";
+            document.getElementById("part2").innerHTML = "";
+
+            for (let i = 1; i <= days; i++) {
+                const button = createButton((i).toString().padStart(2, "0"));
+
+                button.class('level-button');
+                button.mousePressed(() => {
+                    document.getElementById("current-day").innerHTML = "Day: " + (i).toString().padStart(2, "0");
+                    document.getElementById("part1").innerHTML = "Part One: ";
+                    document.getElementById("part2").innerHTML = "Part Two: ";
+
+
+                    import("./src/" + year + "/day" + (i).toString().padStart(2, "0") + "/solution.js").then((module) => {
+                        loadStrings("./src/" + year + "/day" + (i).toString().padStart(2, "0") + "/input.txt", (input) => {
+                            document.getElementById("part1").innerHTML = "Part One: " + (module.part1(input) ?? "Not yet solved");
+                            document.getElementById("part2").innerHTML = "Part Two: " + (module.part2(input) ?? "Not yet solved");
+                        });
+                    });
+                });
+
+                document.getElementById("button-container").appendChild(button.elt);
+            }
+        }
+
+        window.changeYear = function (year) {
+            storeItem("aoc_year", year);
+            setupPage(year);
+        }
+
+        window.p1t = function (day) {
+            const year = document.getElementById("current-year").innerHTML;
+
+            import("./src/" + year + "/day" + (day).toString().padStart(2, "0") + "/solution.js").then((module) => {
+                loadStrings("./src/" + year + "/day" + (day).toString().padStart(2, "0") + "/input_test.txt", (input) => {
+                    console.log(module.part1(input));
+                });
+            });
+        }
+
+        window.p1 = function (day) {
+            const year = document.getElementById("current-year").innerHTML;
+
+            import("./src/" + year + "/day" + (day).toString().padStart(2, "0") + "/solution.js").then((module) => {
+                loadStrings("./src/" + year + "/day" + (day).toString().padStart(2, "0") + "/input.txt", (input) => {
+                    console.log(module.part1(input));
+                });
+            });
+        }
+
+        window.p2t = function (day) {
+            const year = document.getElementById("current-year").innerHTML;
+
+            import("./src/" + year + "/day" + (day).toString().padStart(2, "0") + "/solution.js").then((module) => {
+                loadStrings("./src/" + year + "/day" + (day).toString().padStart(2, "0") + "/input_test.txt", (input) => {
+                    console.log(module.part2(input));
+                });
+            });
+        }
+
+        window.p2 = function (day) {
+            const year = document.getElementById("current-year").innerHTML;
+
+            import("./src/" + year + "/day" + (day).toString().padStart(2, "0") + "/solution.js").then((module) => {
+                loadStrings("./src/" + year + "/day" + (day).toString().padStart(2, "0") + "/input.txt", (input) => {
+                    console.log(module.part2(input));
+                });
+            });
+        }
+    </script>
+
+    <title>Advent of code</title>
+</head>
+
+<body style="background-color: #100F22;">
+
+    <div style="position: absolute; top: 100px; left: 200px;">
+        <h1>Year: </h1>
+        <h1 id="current-year"></h1>
+        <div id="button-container" style="margin-bottom: 120px;"></div>
+    </div>
+
+    <div style="position: absolute; top: 600px; left: 200px;">
+        <h1 id="current-day" style="margin-bottom: 0px;"></h1><br>
+        <h1 id="part1" style="margin-bottom: 0px;"></h1><br>
+        <h1 id="part2" style="margin-bottom: 0px;"></h1><br>
+    </div>
+
+    <div style="text-align: center;position: absolute; top: 80px; left: 800px;">
+        <style>
+            .s1 {
+                color: yellow;
+            }
+
+            .s2 {
+                color: yellow;
+                text-shadow: 0 0 2px yellow, 0 0 5px yellow;
+            }
+
+            .s3 {
+                color: green;
+            }
+
+            .s4 {
+                color: orange;
+                text-shadow: 0 0 2px orange, 0 0 5px orange;
+            }
+
+            .s5 {
+                color: blue;
+                text-shadow: 0 0 2px blue, 0 0 5px blue;
+            }
+
+            .s6 {
+                color: red;
+                text-shadow: 0 0 2px red, 0 0 5px red;
+            }
+
+            .s7 {
+                color: white;
+            }
+        </style>
+        <p style="font-size: 37px; letter-spacing: 5px;line-height: 1.2; transform: scaleY(1.2)">
+            <span class="s1">|</span><br>
+            <span class="s1">\|/</span><br>
+            <span class="s1">--</span><span class="s2">⋆</span><span class="s1">--</span><br>
+            <span class="s3">&gt</span><span class="s4">o</span><span class="s3">&lt</span><br>
+            <span class="s3">&gt</span><span class="s5">O</span><span class="s3">&lt&lt&lt</span><br>
+            <span class="s3">&gt&gt</span><span class="s4">o</span><span class="s3">&gt&gt</span><span class="s2">⋆</span><span class="s3">&lt</span><br>
+            <span class="s3">&gt</span><span class="s4">o</span><span class="s3">&lt&lt&lt</span><span class="s4">o</span><span class="s3">&lt&lt&lt</span><br>
+            <span class="s3">&gt&gt</span><span class="s6">@</span><span class="s3">&gt</span><span class="s2">⋆</span><span class="s3">&lt&lt</span><span class="s5">O</span><span class="s3">&lt&lt&lt</span><br>
+            <span class="s3">&gt</span><span class="s4">o</span><span class="s3">&gt&gt</span><span class="s6">@</span><span class="s3">&gt&gt&gt</span><span class="s4">o</span><span class="s3">&gt</span><span class="s4">o</span><span class="s3">&lt&lt</span><br>
+            <span class="s3">&gt</span><span class="s2">⋆</span><span class="s3">&gt&gt</span><span class="s2">⋆</span><span class="s3">&lt</span><span class="s4">o</span><span class="s3">&lt</span><span class="s6">@</span><span class="s3">&lt</span><span class="s4">o</span><span class="s3">&lt&lt&lt&lt</span><br>
+            <span class="s3">&gt</span><span class="s4">o</span><span class="s3">&gt</span><span class="s4">o</span><span class="s3">&lt&lt&lt</span><span class="s5">O</span><span class="s3">&lt</span><span class="s2">⋆</span><span class="s3">&lt&lt</span><span class="s2">⋆</span><span class="s3">&lt&lt</span><span class="s5">O</span><span class="s3">&lt</span><br>
+            <span class="s7">_ __| |__ _</span><br>
+        </p>
+        <h1 style="text-align: center;margin-top: 60px">Advent of Code</h1>
+    </div>
+</body>
+
+</html>
