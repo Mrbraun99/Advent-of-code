@@ -24,7 +24,7 @@ if (session_cookie == ""):
     session_cookie = input("Enter your session cookie: ")
 
 for year in range(2015,datetime.now().year + 1):
-    if (year == datetime.now().year or os.path.exists(f"{directory}/src/{year}")):
+    if ((year == datetime.now().year and datetime.now().month == 12) or os.path.exists(f"{directory}/src/{year}")):
         for day in range(1, 26 if year != datetime.now().year else min(26, datetime.now().day + 1)):
             path = f"{directory}/src/{year}/day{day:02d}"
 
