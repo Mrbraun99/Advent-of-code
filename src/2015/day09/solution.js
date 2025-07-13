@@ -1,16 +1,16 @@
 export function part1(input) {
     function permutation(values) {
-        let list = [];
+        const list = [];
 
-        function permute(arr, memo = []) {
-            if (arr.length == 0) {
+        function permute(values, memo = []) {
+            if (values.length == 0) {
                 list.push(memo);
                 return;
             }
 
-            for (let i = 0; i < arr.length; i++) {
-                let current = arr.slice();
-                let next = current.splice(i, 1);
+            for (let i = 0; i < values.length; i++) {
+                const current = values.slice();
+                const next = current.splice(i, 1);
                 permute(current.slice(), memo.concat(next));
             }
         }
