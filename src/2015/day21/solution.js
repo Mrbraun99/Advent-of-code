@@ -1,8 +1,8 @@
 export function part1(input) {
-    function variation(items, k, repeats = false) {
+    function combination(items, k, repeats = false) {
         const results = [];
 
-        function variate(start, combo) {
+        function combinate(start, combo) {
             if (combo.length == k) {
                 results.push(combo.slice());
                 return;
@@ -14,12 +14,12 @@ export function part1(input) {
                 if (!repeats && combo.includes(item)) continue;
 
                 combo.push(item);
-                variate(repeats ? i : i + 1, combo);
+                combinate(repeats ? i : i + 1, combo);
                 combo.pop();
             }
         }
 
-        variate(0, []);
+        combinate(0, []);
         return results;
     }
 
@@ -53,21 +53,21 @@ export function part1(input) {
         { "cost": 80, "damage": 0, "armor": 3 }
     ];
 
-    const ring_variations = [[rings[0], rings[0]], ...variation(rings, 2)];
+    const ring_combinations = [[rings[0], rings[0]], ...combination(rings, 2)];
 
     let minimal_gold_cost = Infinity;
 
     for (const weapon of weapons) {
         for (const armor of armors) {
-            for (const ring_variation of ring_variations) {
-                const gold_cost = weapon.cost + armor.cost + ring_variation[0].cost + ring_variation[1].cost;
+            for (const ring_combination of ring_combinations) {
+                const gold_cost = weapon.cost + armor.cost + ring_combination[0].cost + ring_combination[1].cost;
 
                 if (gold_cost > minimal_gold_cost) continue;
 
                 let player = {
                     "hp": 100,
-                    "damage": weapon.damage + ring_variation[0].damage + ring_variation[1].damage,
-                    "armor": armor.armor + ring_variation[0].armor + ring_variation[1].armor,
+                    "damage": weapon.damage + ring_combination[0].damage + ring_combination[1].damage,
+                    "armor": armor.armor + ring_combination[0].armor + ring_combination[1].armor,
                 };
 
                 let boss = {
@@ -94,10 +94,10 @@ export function part1(input) {
 }
 
 export function part2(input) {
-    function variation(items, k, repeats = false) {
+    function combination(items, k, repeats = false) {
         const results = [];
 
-        function variate(start, combo) {
+        function combinate(start, combo) {
             if (combo.length == k) {
                 results.push(combo.slice());
                 return;
@@ -109,12 +109,12 @@ export function part2(input) {
                 if (!repeats && combo.includes(item)) continue;
 
                 combo.push(item);
-                variate(repeats ? i : i + 1, combo);
+                combinate(repeats ? i : i + 1, combo);
                 combo.pop();
             }
         }
 
-        variate(0, []);
+        combinate(0, []);
         return results;
     }
 
@@ -148,21 +148,21 @@ export function part2(input) {
         { "cost": 80, "damage": 0, "armor": 3 }
     ];
 
-    const ring_variations = [[rings[0], rings[0]], ...variation(rings, 2)];
+    const ring_combinations = [[rings[0], rings[0]], ...combination(rings, 2)];
 
     let max_gold_cost = -Infinity;
 
     for (const weapon of weapons) {
         for (const armor of armors) {
-            for (const ring_variation of ring_variations) {
-                const gold_cost = weapon.cost + armor.cost + ring_variation[0].cost + ring_variation[1].cost;
+            for (const ring_combination of ring_combinations) {
+                const gold_cost = weapon.cost + armor.cost + ring_combination[0].cost + ring_combination[1].cost;
 
                 if (gold_cost < max_gold_cost) continue;
 
                 let player = {
                     "hp": 100,
-                    "damage": weapon.damage + ring_variation[0].damage + ring_variation[1].damage,
-                    "armor": armor.armor + ring_variation[0].armor + ring_variation[1].armor,
+                    "damage": weapon.damage + ring_combination[0].damage + ring_combination[1].damage,
+                    "armor": armor.armor + ring_combination[0].armor + ring_combination[1].armor,
                 };
 
                 let boss = {
