@@ -2,10 +2,10 @@ export function part1(input) {
     const wires = {};
     const instructions = [];
 
-    for (const instruction of input) {
+    for (const line of input) {
         let match;
 
-        if ((match = instruction.match(/^(\S+) -> (\S+)$/))) {
+        if ((match = line.match(/^(\S+) -> (\S+)$/))) {
             const [_, a, result] = match;
 
             if (!isNaN(a)) wires[a] = parseInt(a);
@@ -14,7 +14,7 @@ export function part1(input) {
             continue;
         }
 
-        if ((match = instruction.match(/^(\S+) (AND|OR|LSHIFT|RSHIFT) (\S+) -> (\S+)$/))) {
+        if ((match = line.match(/^(\S+) (AND|OR|LSHIFT|RSHIFT) (\S+) -> (\S+)$/))) {
             const [_, a, op, b, result] = match;
 
             if (!isNaN(a)) wires[a] = parseInt(a);
@@ -24,7 +24,7 @@ export function part1(input) {
             continue;
         }
 
-        if ((match = instruction.match(/^NOT (\S+) -> (\S+)$/))) {
+        if ((match = line.match(/^NOT (\S+) -> (\S+)$/))) {
             const [_, a, result] = match;
 
             instructions.push({ "op": "NOT", "a": a, "result": result });
@@ -82,10 +82,10 @@ export function part2(input) {
     const wires = {};
     const instructions = [];
 
-    for (const instruction of input) {
+    for (const line of input) {
         let match;
 
-        if ((match = instruction.match(/^(\S+) -> (\S+)$/))) {
+        if ((match = line.match(/^(\S+) -> (\S+)$/))) {
             const [_, a, result] = match;
 
             if (result == "b") {
@@ -99,7 +99,7 @@ export function part2(input) {
             continue;
         }
 
-        if ((match = instruction.match(/^(\S+) (AND|OR|LSHIFT|RSHIFT) (\S+) -> (\S+)$/))) {
+        if ((match = line.match(/^(\S+) (AND|OR|LSHIFT|RSHIFT) (\S+) -> (\S+)$/))) {
             const [_, a, op, b, result] = match;
 
             if (!isNaN(a)) wires[a] = parseInt(a);
@@ -109,7 +109,7 @@ export function part2(input) {
             continue;
         }
 
-        if ((match = instruction.match(/^NOT (\S+) -> (\S+)$/))) {
+        if ((match = line.match(/^NOT (\S+) -> (\S+)$/))) {
             const [_, a, result] = match;
 
             instructions.push({ "op": "NOT", "a": a, "result": result });

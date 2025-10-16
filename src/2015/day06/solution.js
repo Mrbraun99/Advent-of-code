@@ -1,10 +1,10 @@
 export function part1(input) {
     const grid = [...Array(1000)].map(e => Array(1000).fill(0));
 
-    for (const instruction of input) {
+    for (const line of input) {
         let match;
 
-        if ((match = instruction.match(/^turn (on|off) (\d+),(\d+) through (\d+),(\d+)$/))) {
+        if ((match = line.match(/^turn (on|off) (\d+),(\d+) through (\d+),(\d+)$/))) {
             const [_, mode, start_x, start_y, end_x, end_y] = match;
 
             for (let y = parseInt(start_y); y <= parseInt(end_y); y++) {
@@ -16,7 +16,7 @@ export function part1(input) {
             continue;
         }
 
-        if ((match = instruction.match(/^toggle (\d+),(\d+) through (\d+),(\d+)$/))) {
+        if ((match = line.match(/^toggle (\d+),(\d+) through (\d+),(\d+)$/))) {
             const [_, start_x, start_y, end_x, end_y] = match;
 
             for (let y = parseInt(start_y); y <= parseInt(end_y); y++) {
@@ -42,10 +42,10 @@ export function part1(input) {
 export function part2(input) {
     const grid = [...Array(1000)].map(e => Array(1000).fill(0));
 
-    for (const instruction of input) {
+    for (const line of input) {
         let match;
 
-        if ((match = instruction.match(/^turn (on|off) (\d+),(\d+) through (\d+),(\d+)$/))) {
+        if ((match = line.match(/^turn (on|off) (\d+),(\d+) through (\d+),(\d+)$/))) {
             const [_, mode, start_x, start_y, end_x, end_y] = match;
 
             for (let y = parseInt(start_y); y <= parseInt(end_y); y++) {
@@ -57,7 +57,7 @@ export function part2(input) {
             continue;
         }
 
-        if ((match = instruction.match(/^toggle (\d+),(\d+) through (\d+),(\d+)$/))) {
+        if ((match = line.match(/^toggle (\d+),(\d+) through (\d+),(\d+)$/))) {
             const [_, start_x, start_y, end_x, end_y] = match;
 
             for (let y = parseInt(start_y); y <= parseInt(end_y); y++) {
