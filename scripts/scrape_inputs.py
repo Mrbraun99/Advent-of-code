@@ -41,6 +41,8 @@ if (session_cookie == ""):
 
 for year in range(2015,datetime.now().year + 1):
     if (os.path.exists(f"{os.path.dirname(directory)}/years/{year}")):
+        open(f"{os.path.dirname(directory)}/years/{year}/_solutions.txt", "a").close()
+
         days = 25 if year < 2025 else 12
 
         for day in range(1, (days if year != datetime.now().year else min(days, datetime.now().day)) + 1):

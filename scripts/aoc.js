@@ -1,5 +1,6 @@
 class Aoc {
     static READ_CONSOLE = "Read console";
+    static MERRY_CHRISTMAS = "Merry Christmas!";
 
     static mod(value, modulo) {
         return ((value % modulo) + modulo) % modulo;

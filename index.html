@@ -13,10 +13,8 @@
             setupPage(getItem("aoc_year") ?? ((month() == 12) ? year() : year() - 1));
 
             console.log('%c🎄 Merry Christmas! 🎄', 'color: green; font-size: 20px;');
-            console.log("   - p1t(<DAY>)");
-            console.log("   - p2t(<DAY>)");
-            console.log("   - p1(<DAY>)");
-            console.log("   - p2(<DAY>)");
+            console.log("   - part1test(int : DAY, string : INPUT <OPTIONAL>)");
+            console.log("   - part2test(int : DAY, string : INPUT <OPTIONAL>)");
             console.log("   - changeYear(<YEAR>)");
             console.log('%c🎄 Merry Christmas! 🎄', 'color: green; font-size: 20px;');
         }
@@ -29,6 +27,8 @@
             document.getElementById("current-day").innerHTML = "";
             document.getElementById("part1").innerHTML = "";
             document.getElementById("part2").innerHTML = "";
+            document.getElementById("part1-star").style.visibility = "hidden";
+            document.getElementById("part2-star").style.visibility = "hidden";
 
             for (let i = 1; i <= (year == (new Date().getFullYear()) ? Math.min(day(), days) : days); i++) {
                 const button = createButton((i).toString().padStart(2, "0"));
@@ -38,12 +38,27 @@
                     document.getElementById("current-day").innerHTML = "Day: " + (i).toString().padStart(2, "0");
                     document.getElementById("part1").innerHTML = "Part One: ";
                     document.getElementById("part2").innerHTML = "Part Two: ";
+                    document.getElementById("part1-star").style.visibility = "hidden";
+                    document.getElementById("part2-star").style.visibility = "hidden";
 
+                    loadStrings("./years/" + year + "/_solutions.txt", (input) => {
+                        const [p1, p2] = input[i - 1] ? input[i - 1].split("||") : [null, null];
 
-                    import("./years/" + year + "/day" + (i).toString().padStart(2, "0") + "/solution.js").then((module) => {
-                        loadStrings("./years/" + year + "/day" + (i).toString().padStart(2, "0") + "/input.txt", (input) => {
-                            document.getElementById("part1").innerHTML = "Part One: " + (module.part1(input) ?? "Not yet solved");
-                            document.getElementById("part2").innerHTML = "Part Two: " + (module.part2(input) ?? "Not yet solved");
+                        import("./years/" + year + "/day" + (i).toString().padStart(2, "0") + "/solution.js").then((module) => {
+                            loadStrings("./years/" + year + "/day" + (i).toString().padStart(2, "0") + "/input.txt", (input) => {
+                                Promise.resolve(module.part1(input)).then(result => {
+                                    document.getElementById("part1").innerHTML = "Part One: " + (result ?? "Not yet solved");
+                                    if (result && p1 && result == p1) {
+                                        document.getElementById("part1-star").style.visibility = "visible";
+                                    }
+                                });
+                                Promise.resolve(module.part2(input)).then(result => {
+                                    document.getElementById("part2").innerHTML = "Part Two: " + (result ?? "Not yet solved");
+                                    if (result && p2 && result == p2) {
+                                        document.getElementById("part2-star").style.visibility = "visible";
+                                    }
+                                });
+                            });
                         });
                     });
                 });
@@ -57,45 +72,34 @@
             setupPage(year);
         }
 
-        window.p1t = function (day) {
+        window.part1test = function (day, input = null) {
             const year = document.getElementById("current-year").innerHTML;
 
             import("./years/" + year + "/day" + (day).toString().padStart(2, "0") + "/solution.js").then((module) => {
-                loadStrings("./years/" + year + "/day" + (day).toString().padStart(2, "0") + "/input_test.txt", (input) => {
-                    console.log(module.part1(input));
-                });
+                if (input != null) {
+                    Promise.resolve(module.part1([input])).then(result => console.log(result));
+                } else {
+                    loadStrings("./years/" + year + "/day" + (day).toString().padStart(2, "0") + "/input_test.txt", (input) => {
+                        Promise.resolve(module.part1(input)).then(result => console.log(result));
+                    });
+                }
             });
         }
 
-        window.p1 = function (day) {
+        window.part2test = function (day, input = null) {
             const year = document.getElementById("current-year").innerHTML;
 
             import("./years/" + year + "/day" + (day).toString().padStart(2, "0") + "/solution.js").then((module) => {
-                loadStrings("./years/" + year + "/day" + (day).toString().padStart(2, "0") + "/input.txt", (input) => {
-                    console.log(module.part1(input));
-                });
+                if (input != null) {
+                    Promise.resolve(module.part2([input])).then(result => console.log(result));
+                } else {
+                    loadStrings("./years/" + year + "/day" + (day).toString().padStart(2, "0") + "/input_test.txt", (input) => {
+                        Promise.resolve(module.part2(input)).then(result => console.log(result));
+                    });
+                }
             });
         }
 
-        window.p2t = function (day) {
-            const year = document.getElementById("current-year").innerHTML;
-
-            import("./years/" + year + "/day" + (day).toString().padStart(2, "0") + "/solution.js").then((module) => {
-                loadStrings("./years/" + year + "/day" + (day).toString().padStart(2, "0") + "/input_test.txt", (input) => {
-                    console.log(module.part2(input));
-                });
-            });
-        }
-
-        window.p2 = function (day) {
-            const year = document.getElementById("current-year").innerHTML;
-
-            import("./years/" + year + "/day" + (day).toString().padStart(2, "0") + "/solution.js").then((module) => {
-                loadStrings("./years/" + year + "/day" + (day).toString().padStart(2, "0") + "/input.txt", (input) => {
-                    console.log(module.part2(input));
-                });
-            });
-        }
     </script>
 
     <style>
@@ -109,7 +113,7 @@
         }
 
         h1 {
-            display: inline-block;
+
             text-decoration: none;
             color: #00cc00;
             text-shadow: 0 0 2px #00cc00, 0 0 5px #00cc00;
@@ -142,15 +146,29 @@
 <body style="background-color: #100F22;">
 
     <div style="position: absolute; top: 100px; left: 200px;">
-        <h1>Year: </h1>
-        <h1 id="current-year"></h1>
+        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+            <h1 style="margin-right: 10px;">Year:</h1>
+            <h1 id="current-year"></h1>
+        </div>
         <div id="button-container" style="margin-bottom: 120px;"></div>
     </div>
 
-    <div style="position: absolute; top: 600px; left: 200px;">
-        <h1 id="current-day" style="margin-bottom: 0px;"></h1><br>
-        <h1 id="part1" style="margin-bottom: 0px;"></h1><br>
-        <h1 id="part2" style="margin-bottom: 0px;"></h1><br>
+    <div style="position: absolute; top: 600px; left: 150px;">
+
+        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+            <h1 id="current-day" style="margin: 0;margin-left: 50px;">Day 1</h1>
+        </div>
+
+        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+            <span id="part1-star" class="s2" style="visibility: hidden; width: 50px; text-align: center; font-size: 37px; transform: scaleY(1.2);">⋆</span>
+            <h1 id="part1" style="margin: 0;">Part 1</h1>
+        </div>
+
+        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+            <span id="part2-star" class="s2" style="visibility: hidden; width: 50px; text-align: center; font-size: 37px; transform: scaleY(1.2);">⋆</span>
+            <h1 id="part2" style="margin: 0;">Part 2</h1>
+        </div>
+
     </div>
 
     <div style="text-align: center;position: absolute; top: 80px; left: 800px;">
